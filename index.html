@@ -2,81 +2,106 @@
 <html lang="nl">
 <head>
     <meta charset="UTF-8">
-    <title>GGP ASTMA Analyse - Onderwijs</title>
+    <title>GGP ASTMA Analyse - Casus Drachten</title>
     <style>
-        :root { --police-blue: #1c2b4a; --text-gray: #334155; --border-color: #cbd5e1; }
+        :root { --police-blue: #1c2b4a; --text-gray: #334155; --border-color: #cbd5e1; --success-green: #10b981; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f8fafc; color: var(--text-gray); margin: 0; padding: 40px; }
         
-        /* Inlogscherm */
-        .login-container { max-width: 400px; margin: 100px auto; background: white; padding: 40px; border: 1px solid var(--border-color); border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        /* Login */
+        .login-container { max-width: 400px; margin: 60px auto; background: white; padding: 40px; border: 1px solid var(--border-color); border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
         h2 { color: var(--police-blue); font-weight: 600; margin-top: 0; }
-        input, select { width: 100%; padding: 10px; margin: 10px 0 20px 0; border: 1px solid var(--border-color); border-radius: 4px; box-sizing: border-box; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input, select { width: 100%; padding: 10px; margin-bottom: 20px; border: 1px solid var(--border-color); border-radius: 4px; box-sizing: border-box; }
         
-        /* Hoofdstructuur */
+        /* Layout */
         .main-content { display: grid; grid-template-columns: 450px 1fr; gap: 40px; max-width: 1400px; margin: 0 auto; }
         .hidden { display: none !important; }
 
-        /* Instructievlak */
-        .instruction-box { grid-column: 1 / -1; background: white; border-left: 4px solid var(--police-blue); padding: 20px; margin-bottom: 30px; border-top: 1px solid var(--border-color); border-right: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); }
+        /* Instructie */
+        .instruction-box { grid-column: 1 / -1; background: white; border-left: 4px solid var(--police-blue); padding: 25px; margin-bottom: 30px; border: 1px solid var(--border-color); border-left: 4px solid var(--police-blue); line-height: 1.6; }
         
-        /* Chaos Kolom */
+        /* Kolommen */
         .source-list { background: #eff6ff; padding: 20px; border: 1px solid var(--border-color); border-radius: 4px; min-height: 800px; }
-        .draggable-item { background: white; border: 1px solid var(--border-color); padding: 20px; margin-bottom: 20px; border-radius: 4px; font-size: 0.9rem; line-height: 1.6; }
+        .draggable-item { background: white; border: 1px solid var(--border-color); padding: 20px; margin-bottom: 20px; border-radius: 4px; font-size: 0.9rem; }
         .locked { border-left: 4px solid #ef4444; }
-        .unlocked { border-left: 4px solid #10b981; cursor: grab; }
+        .unlocked { border-left: 4px solid var(--success-green); cursor: grab; }
         
-        /* ASTMA Kolom */
         .target-zones { display: flex; flex-direction: column; gap: 20px; }
-        .drop-zone { background: white; border: 2px dashed var(--border-color); padding: 40px 20px; border-radius: 4px; position: relative; min-height: 80px; transition: background 0.2s; }
-        .drop-zone-label { font-weight: bold; color: var(--police-blue); margin-bottom: 10px; display: block; }
-        .correct-drop { border: 2px solid #10b981; background: #f0fdf4; }
+        .drop-zone { background: white; border: 2px dashed var(--border-color); padding: 40px 20px; border-radius: 4px; position: relative; min-height: 100px; }
+        .drop-zone-label { font-weight: bold; color: var(--police-blue); margin-bottom: 15px; display: block; text-transform: uppercase; letter-spacing: 1px; }
+        .correct-drop { border: 2px solid var(--success-green); background: #f0fdf4; }
 
-        /* Knoppen */
-        .btn { background: var(--police-blue); color: white; padding: 12px 24px; border: none; border-radius: 4px; cursor: pointer; font-size: 1rem; }
-        .btn:hover { background: #2d3e61; }
-        
-        textarea { width: 100%; height: 80px; margin-top: 15px; border: 1px solid var(--border-color); padding: 10px; box-sizing: border-box; resize: none; }
+        /* Leaderboard */
+        .leaderboard { grid-column: 1 / -1; margin-top: 50px; background: white; padding: 30px; border: 1px solid var(--border-color); border-radius: 4px; }
+        .leader-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        .leader-table th, .leader-table td { text-align: left; padding: 12px; border-bottom: 1px solid #edf2f7; }
+        .progress-bar { background: #edf2f7; height: 8px; border-radius: 4px; width: 100%; max-width: 200px; }
+        .progress-fill { background: var(--success-green); height: 100%; border-radius: 4px; transition: width 0.3s; }
+
+        /* UI Elements */
+        .btn { background: var(--police-blue); color: white; padding: 12px 24px; border: none; border-radius: 4px; cursor: pointer; font-size: 1rem; width: 100%; }
+        textarea { width: 100%; height: 70px; margin-top: 15px; border: 1px solid var(--border-color); padding: 12px; box-sizing: border-box; resize: none; font-family: inherit; }
+        mark { background-color: #fef9c3; color: #000; padding: 0 2px; }
     </style>
 </head>
 <body>
 
 <div id="login-screen" class="login-container">
-    <h2>Inloggen Oefenomgeving</h2>
-    <label>Volledige naam student</label>
-    <input type="text" id="student-name">
+    <h2>GGP Oefenomgeving</h2>
+    <label>Naam student</label>
+    <input type="text" id="student-name" placeholder="Voornaam Achternaam">
     <label>Klas</label>
     <select id="student-class">
-        <option value="Klas_A">Klas A</option>
-        <option value="Klas_B">Klas B</option>
-        <option value="Klas_C">Klas C</option>
+        <option value="Klas_Delta">Klas Delta</option>
+        <option value="Klas_Echo">Klas Echo</option>
+        <option value="Klas_Foxtrot">Klas Foxtrot</option>
+        <option value="Klas_Golf">Klas Golf</option>
+        <option value="Klas_Juliett">Klas Juliett</option>
+        <option value="Klas_Lima">Klas Lima</option>
+        <option value="Klas_Mike">Klas Mike</option>
     </select>
     <button class="btn" onclick="startOefening()">Start oefening</button>
 </div>
 
 <div id="exercise-screen" class="main-content hidden">
     <div class="instruction-box">
-        <strong>Instructie</strong><br>
-        1. Analyseer de alinea's in de linker kolom. Deze bevatten zinnen in de "wij-vorm".<br>
-        2. Herschrijf de gemarkeerde zin in het tekstvak naar de individuele ik-vorm (bijv. <i>Ik, verbalisant J. de VRIES, zag dat...</i>).<br>
-        3. Na correctie wordt de alinea ontgrendeld. Sleep deze naar het juiste onderdeel van het ASTMA-model.
+        <strong>Instructie: Proces-verbaal Individualiseren</strong><br>
+        1. <strong>Analyseer:</strong> De alinea's links staan in de wij-vorm. Dit is onjuist voor een PV van bevindingen.<br>
+        2. <strong>Herschrijf:</strong> Zet de gemarkeerde zin om naar de ik-vorm. Gebruik de verplichte tussenwerping tussen komma's: <br>
+        <em>&nbsp;&nbsp;&nbsp;ik, verbalisant [Naam], [werkwoord] dat...</em><br>
+        3. <strong>Indelen:</strong> Pas na een foutloze zin wordt het blokje groen. Sleep het naar de juiste fase van het ASTMA-model.
     </div>
 
     <div class="source-list" id="chaos-column">
-        <h3 style="margin-top:0">Ongeordende alinea's</h3>
+        <h3 style="margin: 0 0 20px 0; color: var(--police-blue);">Ongeordende bevindingen</h3>
     </div>
 
     <div class="target-zones">
-        <div class="drop-zone" data-type="A"><span class="drop-zone-label">Aanleiding</span></div>
-        <div class="drop-zone" data-type="S"><span class="drop-zone-label">Situatie (Decor - OTT)</span></div>
-        <div class="drop-zone" data-type="T"><span class="drop-zone-label">Toedracht (Handelingen - OVT)</span></div>
-        <div class="drop-zone" data-label="M" data-type="M"><span class="drop-zone-label">Maatregelen</span></div>
-        <div class="drop-zone" data-type="Af"><span class="drop-zone-label">Afhandeling</span></div>
+        <div class="drop-zone" data-type="A"><span class="drop-zone-label">A - Aanleiding</span></div>
+        <div class="drop-zone" data-type="S"><span class="drop-zone-label">S - Situatie (Decor in OTT)</span></div>
+        <div class="drop-zone" data-type="T"><span class="drop-zone-label">T - Toedracht (Waarneming in OVT)</span></div>
+        <div class="drop-zone" data-type="M"><span class="drop-zone-label">M - Maatregelen</span></div>
+        <div class="drop-zone" data-type="Af"><span class="drop-zone-label">A - Afhandeling</span></div>
+    </div>
+
+    <div class="leaderboard">
+        <h3 style="margin:0; color: var(--police-blue);">Live Leaderboard: <span id="class-display"></span></h3>
+        <table class="leader-table" id="leader-table">
+            <thead>
+                <tr>
+                    <th>Student</th>
+                    <th>Voortgang</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody id="leader-body"></tbody>
+        </table>
     </div>
 </div>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
-    import { getDatabase, ref, set, update } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js";
+    import { getDatabase, ref, set, update, onValue } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyC-Of0AUOd-kVo2RKxYc-68Gr-RO4HdRk0",
@@ -88,25 +113,28 @@
     const db = getDatabase(app);
 
     const pvData = [
-        { id: 1, type: "A", text: "Op 09-03-2026 kregen wij melding Sportlaan 7. <mark>Wij kregen de opdracht om naar de Sportlaan 7 te gaan.</mark> We reden in een herkenbaar voertuig.", check: "ik, verbalisant" },
-        { id: 2, type: "S", text: "De parkeervakken liggen aan de noordzijde van perceel Sportlaan 7. Ter plaatse ligt witte sneeuw. <mark>Wij zagen dat een zwarte VW Golf geparkeerd stond.</mark>", check: "ik, verbalisant" },
-        { id: 3, type: "T", text: "Ter plaatse hoorde ik de melder. <mark>Wij zagen dat J.J. STOUT geld aannam.</mark> Hij leek zich niet te realiseren dat hij werd geobserveerd.", check: "ik, verbalisant" },
-        { id: 4, type: "M", text: "Stout maakte een zenuwachtige indruk. <mark>Wij vorderden inzage in zijn identiteitsbewijs.</mark> Op grond van de Opiumwet onderzochten we hem.", check: "ik, verbalisant" },
-        { id: 5, type: "Af", text: "De verdachte is overgebracht naar bureau Drachten. <mark>Wij maakten dit proces-verbaal op ambtseed op.</mark>", check: "ik, verbalisant" }
+        { id: 1, type: "A", text: "Op 09-03-2026 kregen wij melding Sportlaan 7. <mark>Wij kregen de opdracht om naar de Sportlaan 7 te gaan.</mark> We reden in een herkenbaar voertuig.", verb: ["kreeg"] },
+        { id: 2, type: "S", text: "De parkeervakken liggen noordzijde van perceel 7. Ter plaatse ligt witte sneeuw. <mark>Wij zagen dat een zwarte VW Golf geparkeerd stond.</mark>", verb: ["zag"] },
+        { id: 3, type: "T", text: "Ter plaatse sprak ik de melder. Deze zag geld en zakjes worden gewisseld. <mark>Wij zagen dat de inzittende, J.J. STOUT, geld aannam.</mark>", verb: ["zag"] },
+        { id: 4, type: "M", text: "Stout maakte een zenuwachtige indruk. <mark>Wij vorderden inzage in zijn identiteitsbewijs.</mark> Op grond van de Opiumwet onderzochten we hem.", verb: ["vorderde"] },
+        { id: 5, type: "Af", text: "De verdachte is overgebracht naar bureau Drachten. <mark>Wij maakten hiervan op ambtseed dit proces-verbaal op.</mark>", verb: ["maakte"] }
     ];
 
     let userPath = "";
+    let studentName = "";
+    let currentClass = "";
 
     window.startOefening = () => {
-        const name = document.getElementById('student-name').value;
-        const klas = document.getElementById('student-class').value;
-        if (!name) return alert("Vul uw naam in.");
+        studentName = document.getElementById('student-name').value;
+        currentClass = document.getElementById('student-class').value;
+        if (!studentName) return alert("Naam invullen.");
 
-        userPath = `ggp_sessie/${klas}/${name.replace(/\s+/g, '_')}`;
+        userPath = `ggp_sessie/${currentClass}/${studentName.replace(/\s+/g, '_')}`;
         document.getElementById('login-screen').classList.add('hidden');
         document.getElementById('exercise-screen').classList.remove('hidden');
+        document.getElementById('class-display').innerText = currentClass.replace('_', ' ');
 
-        set(ref(db, userPath), { name, progress: 0, status: "Gestart" });
+        set(ref(db, userPath), { name: studentName, progress: 0, status: "Bezig" });
 
         const container = document.getElementById('chaos-column');
         pvData.sort(() => Math.random() - 0.5).forEach(item => {
@@ -115,15 +143,39 @@
             div.id = `item-${item.id}`;
             div.innerHTML = `
                 <div>${item.text}</div>
-                <textarea placeholder="Herschrijf de gemarkeerde zin in de ik-vorm..." oninput="valideer(this, ${item.id})"></textarea>
+                <textarea placeholder="Typ: ik, verbalisant [Naam], ..." oninput="valideer(this, ${item.id})"></textarea>
             `;
             container.appendChild(div);
+        });
+
+        // Start live leaderboard
+        onValue(ref(db, `ggp_sessie/${currentClass}`), (snapshot) => {
+            const data = snapshot.val();
+            const body = document.getElementById('leader-body');
+            body.innerHTML = "";
+            if (data) {
+                Object.values(data).sort((a,b) => b.progress - a.progress).forEach(s => {
+                    body.innerHTML += `
+                        <tr>
+                            <td>${s.name}</td>
+                            <td><div class="progress-bar"><div class="progress-fill" style="width:${s.progress}%"></div></div></td>
+                            <td>${s.progress === 100 ? '✅ Voltooid' : '⌛ ' + s.progress + '%'}</td>
+                        </tr>`;
+                });
+            }
         });
     };
 
     window.valideer = (el, id) => {
-        const input = el.value.toLowerCase();
-        if (input.includes("ik, verbalisant") && (input.includes("zag") || input.includes("kreeg") || input.includes("vorderde") || input.includes("maakte"))) {
+        const input = el.value.toLowerCase().trim();
+        const item = pvData.find(x => x.id === id);
+        
+        // STRENG: ik, verbalisant [naam], [werkwoord]
+        const ikVormRegex = /^ik,\s+verbalisant\s+[a-z\.\s]+,\s+/;
+        const hasCorrectStructure = ikVormRegex.test(input);
+        const hasVerb = item.verb.some(v => input.includes(v));
+
+        if (hasCorrectStructure && hasVerb) {
             const block = document.getElementById(`item-${id}`);
             block.classList.replace('locked', 'unlocked');
             block.draggable = true;
@@ -132,22 +184,25 @@
             
             block.ondragstart = (e) => {
                 e.dataTransfer.setData('id', id);
-                e.dataTransfer.setData('type', pvData.find(x => x.id === id).type);
+                e.dataTransfer.setData('type', item.type);
             };
-            update(ref(db, userPath), { progress: id * 20 });
         }
     };
 
     document.querySelectorAll('.drop-zone').forEach(zone => {
-        zone.ondragover = (e) => e.preventDefault();
-        zone.ondrop = (e) => {
+        zone.ondragover = e => e.preventDefault();
+        zone.ondrop = e => {
             const id = e.dataTransfer.getData('id');
             const type = e.dataTransfer.getData('type');
             if (type === zone.dataset.type) {
                 zone.appendChild(document.getElementById(`item-${id}`));
                 zone.classList.add('correct-drop');
+                
+                const currentProgress = (document.querySelectorAll('.correct-drop').length / 5) * 100;
+                update(ref(db, userPath), { progress: Math.round(currentProgress) });
+                if (currentProgress === 100) update(ref(db, userPath), { status: "Voltooid" });
             } else {
-                alert("Incorrecte plaatsing binnen het ASTMA-model.");
+                alert("Niet de juiste ASTMA-fase.");
             }
         };
     });
