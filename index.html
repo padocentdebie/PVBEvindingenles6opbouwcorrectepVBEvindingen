@@ -2,112 +2,115 @@
 <html lang="nl">
 <head>
     <meta charset="UTF-8">
-    <title>GGP ASTMA - Correctie & Structuur</title>
+    <title>GGP - ASTMA Structuur Analyse</title>
     <style>
-        :root { --police-blue: #1c2b4a; --police-gold: #f1c40f; --bg-gray: #f0f2f5; }
-        body { font-family: 'Segoe UI', sans-serif; background: var(--bg-gray); margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
-        .container { width: 95%; max-width: 1200px; display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 20px; }
+        :root { --police-blue: #1c2b4a; --police-gold: #f1c40f; --bg-gray: #f8fafc; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg-gray); color: #334155; margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
+        .container { width: 100%; max-width: 1200px; display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 20px; }
         
-        /* De bron-items */
-        .source-container { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        /* Linkerkant: De alinea's */
+        .source-container { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
         .draggable-item { 
             background: #fff; border: 2px solid #e2e8f0; padding: 15px; margin-bottom: 15px; 
-            border-radius: 8px; font-size: 0.9rem; transition: 0.3s; position: relative;
+            border-radius: 8px; cursor: grab; font-size: 0.95rem; line-height: 1.5;
         }
-        .draggable-item.locked { border-left: 5px solid #ef4444; }
-        .draggable-item.unlocked { border-left: 5px solid #10b981; cursor: grab; }
-        
-        /* Input veld voor correctie */
-        .correction-input { width: 100%; margin-top: 10px; padding: 8px; border: 1px solid #cbd5e1; border-radius: 4px; }
-        
-        /* ASTMA Zones */
-        .target-zones { display: flex; flex-direction: column; gap: 15px; }
+        .draggable-item:active { cursor: grabbing; }
+
+        /* Rechterkant: ASTMA Zones */
+        .target-zones { display: flex; flex-direction: column; gap: 20px; }
         .drop-zone { 
-            background: white; border: 2px dashed #cbd5e1; padding: 20px; border-radius: 12px; 
-            min-height: 100px; position: relative; transition: 0.3s;
+            background: #fff; border: 2px dashed #cbd5e1; padding: 25px; border-radius: 12px; 
+            min-height: 80px; position: relative; transition: 0.3s;
         }
+        .drop-zone.over { border-color: var(--police-blue); background: #f1f5f9; }
         .drop-zone::before { 
             content: attr(data-label); position: absolute; top: -12px; left: 15px; 
             background: var(--police-blue); color: white; padding: 3px 12px; border-radius: 5px; font-size: 0.8rem; font-weight: bold;
         }
-        .drop-zone.correct-drop { border-color: #10b981; background: #f0fdf4; }
+        .correct-drop { border-color: #10b981 !important; background: #f0fdf4 !important; border-style: solid !important; }
 
-        .instruction { background: var(--police-blue); color: white; padding: 15px; border-radius: 8px; width: 95%; max-width: 1200px; margin-bottom: 20px; }
+        .header-box { background: var(--police-blue); color: white; padding: 20px; border-radius: 8px; width: 100%; max-width: 1160px; margin-bottom: 20px; text-align: center; }
     </style>
 </head>
 <body>
 
-<div class="instruction">
-    <strong>GGP Uitdaging:</strong> In elke alinea zit één stijlfout (zoals <em>beseffen</em> i.p.v. <em>realiseren</em> of een contaminatie). 
-    Typ het <u>foute woord</u> over in het vakje om de alinea te "ontgrendelen". Sleep hem daarna naar het juiste ASTMA-onderdeel.
+<div class="header-box">
+    <h1 style="margin:0">GGP PV-Analyse: Het ASTMA Model</h1>
+    <p style="margin:10px 0 0">Sleep de alinea's naar de juiste plek. Let op de GGP-eisen (OTT/OVT/Redenen van wetenschap).</p>
 </div>
 
 <div class="container">
     <div class="source-container" id="source-list">
-        <h3>Te verbeteren alinea's</h3>
-    </div>
+        <h3 style="margin-top:0">Beschikbare alinea's</h3>
+        </div>
 
     <div class="target-zones">
-        <div class="drop-zone" data-label="Aanleiding" data-type="A"></div>
-        <div class="drop-zone" data-label="Situatie (Decor - OTT)" data-type="S"></div>
-        <div class="drop-zone" data-label="Toedracht (Handelingen - OVT)" data-type="T"></div>
-        <div class="drop-zone" data-label="Maatregelen (Juridisch/Ambtelijk)" data-type="M"></div>
-        <div class="drop-zone" data-label="Afhandeling" data-type="Af"></div>
+        <div class="drop-zone" data-label="Aanleiding (Hoedanigheid/OC-opdracht)" data-type="A"></div>
+        <div class="drop-zone" data-label="Situatie (Decor in OTT)" data-type="S"></div>
+        <div class="drop-zone" data-label="Toedracht (Handelingen in OVT)" data-type="T"></div>
+        <div class="drop-zone" data-label="Maatregelen (Strafrecht/Ambtsinstructie)" data-type="M"></div>
+        <div class="drop-zone" data-label="Afhandeling (Afronding)" data-type="Af"></div>
     </div>
 </div>
 
 <script>
+    /* DOCENT: Pas hieronder de teksten aan. 
+       - type: A (Aanleiding), S (Situatie), T (Toedracht), M (Maatregelen), Af (Afhandeling)
+    */
     const pvData = [
-        { id: 1, type: "A", error: "telefoneren", text: "Ik, Jan de VRIES, hoofdagente van politie Utrecht, kreeg de opdracht van de OC om de verdachte op te telefoneren.", hint: "Fout: telefoneren (contaminatie: opbellen/telefoneren)" },
-        { id: 2, type: "S", text: "De supermarkt is gelegen aan een breed trottoir waar witte sneeuw op de grond ligt.", error: "witte", hint: "Fout: witte (pleonasme)" },
-        { id: 3, type: "T", text: "Ik zag dat de man zich niet leek te beseffen dat ik achter hem liep.", error: "beseffen", hint: "Fout: beseffen (moet realiseren zijn)" },
-        { id: 4, type: "M", text: "Ik heb de verdachte op grond van zijn criminele misdaden aangehouden.", error: "criminele", hint: "Fout: criminele (pleonasme)" },
-        { id: 5, type: "Af", text: "De Officier van Justitie eiste een straf voor altijd en eeuwig.", error: "eeuwig", hint: "Fout: eeuwig (tautologie)" }
+        { id: 1, type: "A", text: "Ik, voornaam ACHTERNAAM, hoofdagente van politie Eenheid Amersfoort, was op maandag 9 maart 2026 gekleed in het voorgeschreven politie-uniform en deed dienst in een herkenbaar dienstvoertuig. Ik was belast met de noodhulpverlening en kreeg de opdracht van de Operationeel Centrum (OC) om te gaan naar..." },
+        { id: 2, type: "S", text: "De parkeerplaats bij de supermarkt is verhard met klinkers. Er staan meerdere voertuigen geparkeerd. Aan de linkerzijde bevindt zich een overdekte fietsenstalling. Het zicht is ter plaatse goed door de aanwezige straatverlichting." },
+        { id: 3, type: "T", text: "Ik zag dat de verdachte met versnelde pas wegliep. Ik hoorde de winkelier roepen: 'Houd hem tegen!'. Vervolgens zag ik dat de man een zilverkleurig voorwerp in de bosjes wierp. Ik rook een sterke alcohollucht toen ik de man naderde." },
+        { id: 4, type: "M", text: "Op maandag 9 maart 2026, om 11:15 uur, heb ik de verdachte aangehouden voor diefstal. Ik heb hem direct de cautie gegeven. Omdat de verdachte zich verzette, heb ik hem conform de Ambtsinstructie in de boeien geslagen (transportboeien)." },
+        { id: 5, type: "Af", text: "De verdachte is voor nader onderzoek ingesloten. Het aangetroffen voorwerp is als bewijs veiliggesteld. Ik heb dit proces-verbaal naar waarheid opgemaakt op mijn ambtseed." }
     ];
 
     const sourceList = document.getElementById('source-list');
 
+    // Husselen en tonen
     pvData.sort(() => Math.random() - 0.5).forEach(item => {
         const div = document.createElement('div');
-        div.className = 'draggable-item locked';
-        div.id = `pv-${item.id}`;
-        div.innerHTML = `
-            <div>${item.text}</div>
-            <input type="text" class="correction-input" placeholder="Typ het foute woord..." oninput="checkError(this, '${item.error}', '${item.id}')">
-        `;
+        div.className = 'draggable-item';
+        div.draggable = true;
+        div.innerText = item.text;
+        div.id = `item-${item.id}`;
+        div.dataset.type = item.type;
+        
+        div.addEventListener('dragstart', e => {
+            e.dataTransfer.setData('text/plain', item.id);
+            e.dataTransfer.setData('correct-type', item.type);
+        });
+        
         sourceList.appendChild(div);
     });
 
-    window.checkError = (input, correctError, id) => {
-        if (input.value.toLowerCase().trim() === correctError.toLowerCase()) {
-            const parent = document.getElementById(`pv-${id}`);
-            parent.classList.remove('locked');
-            parent.classList.add('unlocked');
-            parent.draggable = true;
-            input.disabled = true;
-            input.style.backgroundColor = "#d1fae5";
-            
-            parent.addEventListener('dragstart', e => {
-                e.dataTransfer.setData('text/plain', id);
-                e.dataTransfer.setData('type', pvData.find(x => x.id == id).type);
-            });
-        }
-    };
-
+    // Drop-zones configureren
     document.querySelectorAll('.drop-zone').forEach(zone => {
-        zone.addEventListener('dragover', e => e.preventDefault());
+        zone.addEventListener('dragover', e => {
+            e.preventDefault();
+            zone.classList.add('over');
+        });
+
+        zone.addEventListener('dragleave', () => zone.classList.remove('over'));
+
         zone.addEventListener('drop', e => {
             e.preventDefault();
-            const id = e.dataTransfer.getData('text/plain');
-            const type = e.dataTransfer.getData('type');
-            if (type === zone.dataset.type) {
-                zone.appendChild(document.getElementById(`pv-${id}`));
+            zone.classList.remove('over');
+            const draggedId = e.dataTransfer.getData('text/plain');
+            const correctType = e.dataTransfer.getData('correct-type');
+            const targetType = zone.dataset.type;
+
+            if (correctType === targetType) {
+                const element = document.getElementById(`item-${draggedId}`);
+                zone.appendChild(element);
+                element.draggable = false;
                 zone.classList.add('correct-drop');
             } else {
-                alert("Verkeerde ASTMA-zone!");
+                alert("Verkeerde plek. Kijk goed naar de werkwoordstijden en de GGP-criteria!");
             }
         });
     });
 </script>
+
 </body>
 </html>
