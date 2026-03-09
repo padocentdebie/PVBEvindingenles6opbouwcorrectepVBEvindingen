@@ -14,34 +14,34 @@
         input, select { width: 100%; padding: 10px; margin-bottom: 20px; border: 1px solid var(--border-color); border-radius: 4px; box-sizing: border-box; }
         
         /* Layout */
-        .main-content { display: grid; grid-template-columns: 450px 1fr; gap: 40px; max-width: 1400px; margin: 0 auto; }
+        .main-content { display: grid; grid-template-columns: 480px 1fr; gap: 40px; max-width: 1500px; margin: 0 auto; }
         .hidden { display: none !important; }
 
         /* Instructie */
-        .instruction-box { grid-column: 1 / -1; background: white; border-left: 4px solid var(--police-blue); padding: 25px; margin-bottom: 30px; border: 1px solid var(--border-color); border-left: 4px solid var(--police-blue); line-height: 1.6; }
+        .instruction-box { grid-column: 1 / -1; background: white; padding: 25px; margin-bottom: 30px; border: 1px solid var(--border-color); border-left: 5px solid var(--police-blue); line-height: 1.6; font-size: 1.05rem; }
         
         /* Kolommen */
-        .source-list { background: #eff6ff; padding: 20px; border: 1px solid var(--border-color); border-radius: 4px; min-height: 800px; }
-        .draggable-item { background: white; border: 1px solid var(--border-color); padding: 20px; margin-bottom: 20px; border-radius: 4px; font-size: 0.9rem; }
-        .locked { border-left: 4px solid #ef4444; }
-        .unlocked { border-left: 4px solid var(--success-green); cursor: grab; }
+        .source-list { background: #eff6ff; padding: 25px; border: 1px solid var(--border-color); border-radius: 4px; min-height: 900px; }
+        .draggable-item { background: white; border: 1px solid var(--border-color); padding: 20px; margin-bottom: 25px; border-radius: 4px; font-size: 0.95rem; line-height: 1.7; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
+        .locked { border-left: 5px solid #ef4444; }
+        .unlocked { border-left: 5px solid var(--success-green); cursor: grab; }
         
         .target-zones { display: flex; flex-direction: column; gap: 20px; }
-        .drop-zone { background: white; border: 2px dashed var(--border-color); padding: 40px 20px; border-radius: 4px; position: relative; min-height: 100px; }
-        .drop-zone-label { font-weight: bold; color: var(--police-blue); margin-bottom: 15px; display: block; text-transform: uppercase; letter-spacing: 1px; }
+        .drop-zone { background: white; border: 2px dashed var(--border-color); padding: 40px 25px; border-radius: 4px; position: relative; min-height: 120px; transition: all 0.2s; }
+        .drop-zone-label { font-weight: bold; color: var(--police-blue); margin-bottom: 15px; display: block; text-transform: uppercase; letter-spacing: 1.5px; font-size: 0.9rem; }
         .correct-drop { border: 2px solid var(--success-green); background: #f0fdf4; }
 
         /* Leaderboard */
         .leaderboard { grid-column: 1 / -1; margin-top: 50px; background: white; padding: 30px; border: 1px solid var(--border-color); border-radius: 4px; }
         .leader-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-        .leader-table th, .leader-table td { text-align: left; padding: 12px; border-bottom: 1px solid #edf2f7; }
-        .progress-bar { background: #edf2f7; height: 8px; border-radius: 4px; width: 100%; max-width: 200px; }
-        .progress-fill { background: var(--success-green); height: 100%; border-radius: 4px; transition: width 0.3s; }
+        .leader-table th, .leader-table td { text-align: left; padding: 15px; border-bottom: 1px solid #edf2f7; }
+        .progress-bar { background: #edf2f7; height: 10px; border-radius: 5px; width: 100%; max-width: 300px; }
+        .progress-fill { background: var(--success-green); height: 100%; border-radius: 5px; transition: width 0.5s ease-in-out; }
 
-        /* UI Elements */
-        .btn { background: var(--police-blue); color: white; padding: 12px 24px; border: none; border-radius: 4px; cursor: pointer; font-size: 1rem; width: 100%; }
-        textarea { width: 100%; height: 70px; margin-top: 15px; border: 1px solid var(--border-color); padding: 12px; box-sizing: border-box; resize: none; font-family: inherit; }
-        mark { background-color: #fef9c3; color: #000; padding: 0 2px; }
+        /* Interactie */
+        .btn { background: var(--police-blue); color: white; padding: 14px 24px; border: none; border-radius: 4px; cursor: pointer; font-size: 1.1rem; width: 100%; font-weight: 600; }
+        textarea { width: 100%; height: 100px; margin-top: 20px; border: 1px solid var(--border-color); padding: 15px; box-sizing: border-box; resize: none; font-family: inherit; font-size: 0.9rem; border-radius: 4px; }
+        textarea:focus { outline: 2px solid var(--police-blue); border-color: transparent; }
     </style>
 </head>
 <body>
@@ -60,39 +60,36 @@
         <option value="Klas_Lima">Klas Lima</option>
         <option value="Klas_Mike">Klas Mike</option>
     </select>
-    <button class="btn" onclick="startOefening()">Start oefening</button>
+    <button class="btn" onclick="startOefening()">Start Analyse</button>
 </div>
 
 <div id="exercise-screen" class="main-content hidden">
     <div class="instruction-box">
-        <strong>Instructie: Proces-verbaal Individualiseren</strong><br>
-        1. <strong>Analyseer:</strong> De alinea's links staan in de wij-vorm. Dit is onjuist voor een PV van bevindingen.<br>
-        2. <strong>Herschrijf:</strong> Zet de gemarkeerde zin om naar de ik-vorm. Gebruik de verplichte tussenwerping tussen komma's: <br>
-        <em>&nbsp;&nbsp;&nbsp;ik, verbalisant [Naam], [werkwoord] dat...</em><br>
-        3. <strong>Indelen:</strong> Pas na een foutloze zin wordt het blokje groen. Sleep het naar de juiste fase van het ASTMA-model.
+        <strong>Instructie: Proces-verbaal Analyse & Individualisering</strong><br>
+        De onderstaande teksten uit de Casus Drachten bevatten stijlfouten, onjuiste "wij-vormen" en vage tijdsaanduidingen. Dit is niet toegestaan in een officieel proces-verbaal.<br><br>
+        1. <strong>Analyseer:</strong> Spoor de foutieve zin of vage handeling op in de alinea.<br>
+        2. <strong>Individualiseer:</strong> Herschrijf de betreffende zin in de ik-vorm met de verplichte tussenwerping: <i>ik, verbalisant [Je Naam], ...</i><br>
+        3. <strong>Factualiseer:</strong> Zorg dat bij handelingen (vorderen/opmaken) de exacte <strong>dag, datum en tijd</strong> worden vermeld.<br>
+        4. <strong>Categoriseer:</strong> Pas als de zin correct is, wordt het blokje groen. Sleep het naar de juiste fase van het ASTMA-model.
     </div>
 
-    <div class="source-list" id="chaos-column">
-        <h3 style="margin: 0 0 20px 0; color: var(--police-blue);">Ongeordende bevindingen</h3>
+    <div id="chaos-column" class="source-list">
+        <h3 style="margin: 0 0 25px 0; color: var(--police-blue);">Ongeordende Bevindingen</h3>
     </div>
 
     <div class="target-zones">
         <div class="drop-zone" data-type="A"><span class="drop-zone-label">A - Aanleiding</span></div>
-        <div class="drop-zone" data-type="S"><span class="drop-zone-label">S - Situatie (Decor in OTT)</span></div>
+        <div class="drop-zone" data-type="S"><span class="drop-zone-label">S - Situatie (Decor in vast: OTT veranderlijk : OVT)</span></div>
         <div class="drop-zone" data-type="T"><span class="drop-zone-label">T - Toedracht (Waarneming in OVT)</span></div>
-        <div class="drop-zone" data-type="M"><span class="drop-zone-label">M - Maatregelen</span></div>
+        <div class="drop-zone" data-type="M"><span class="drop-zone-label">M - Maatregelen (Dwangmiddelen? Wie voert middelen uit? Dag datum tijd?)</span></div>
         <div class="drop-zone" data-type="Af"><span class="drop-zone-label">A - Afhandeling</span></div>
     </div>
 
     <div class="leaderboard">
         <h3 style="margin:0; color: var(--police-blue);">Live Leaderboard: <span id="class-display"></span></h3>
-        <table class="leader-table" id="leader-table">
+        <table class="leader-table">
             <thead>
-                <tr>
-                    <th>Student</th>
-                    <th>Voortgang</th>
-                    <th>Status</th>
-                </tr>
+                <tr><th>Student</th><th>Voortgang</th><th>Status</th></tr>
             </thead>
             <tbody id="leader-body"></tbody>
         </table>
@@ -113,11 +110,11 @@
     const db = getDatabase(app);
 
     const pvData = [
-        { id: 1, type: "A", text: "Op 09-03-2026 kregen wij melding Sportlaan 7. <mark>Wij kregen de opdracht om naar de Sportlaan 7 te gaan.</mark> We reden in een herkenbaar voertuig.", verb: ["kreeg"] },
-        { id: 2, type: "S", text: "De parkeervakken liggen noordzijde van perceel 7. Ter plaatse ligt witte sneeuw. <mark>Wij zagen dat een zwarte VW Golf geparkeerd stond.</mark>", verb: ["zag"] },
-        { id: 3, type: "T", text: "Ter plaatse sprak ik de melder. Deze zag geld en zakjes worden gewisseld. <mark>Wij zagen dat de inzittende, J.J. STOUT, geld aannam.</mark>", verb: ["zag"] },
-        { id: 4, type: "M", text: "Stout maakte een zenuwachtige indruk. <mark>Wij vorderden inzage in zijn identiteitsbewijs.</mark> Op grond van de Opiumwet onderzochten we hem.", verb: ["vorderde"] },
-        { id: 5, type: "Af", text: "De verdachte is overgebracht naar bureau Drachten. <mark>Wij maakten hiervan op ambtseed dit proces-verbaal op.</mark>", verb: ["maakte"] }
+        { id: 1, type: "A", text: "Op maandag 09 maart 2026 kregen wij, verbalisanten J. de VRIES en S. de JONG, aspirant-agenten eenheid Drachten Centrum, de melding Sportlaan 7. Wij kregen de opdracht om de melder op te telefoneren over de situatie. Wij reden in een herkenbaar dienstvoertuig.", check: ["ik, verbalisant", "opbel"] },
+        { id: 2, type: "S", text: "De parkeervakken bevinden zich aan de noordzijde van perceel Sportlaan 7 te Drachten. Ter plaatse ligt witte sneeuw op de klinkers. Wij zagen dat een zwarte personenauto, merk Volkswagen, type Golf, geparkeerd stond.", check: ["ik, verbalisant", "zag"] },
+        { id: 3, type: "T", text: "Ter plaatse sprak ik de melder aan. Deze vertelde dat hij geld en zakjes zag worden uitgewisseld tussen personen. Wij zagen dat de inzittende, J.J. STOUT, geld aannam. Stout leek zich niet te beseffen dat hij werd geobserveerd.", check: ["ik, verbalisant", "realise", "zag"] },
+        { id: 4, type: "M", text: "Stout maakte een zenuwachtige indruk en trilde met zijn handen. Kort daarna vorderden wij inzage in het identiteitsbewijs van de verdachte Stout. Vanwege de criminele misdaden uit het verleden hebben wij hem op grond van de Opiumwet onderzocht.", check: ["ik, verbalisant", "maandag", "09 maart", "11:", "vorderde"] },
+        { id: 5, type: "Af", text: "De verdachte is ten spoedigste overgebracht naar het bureau Drachten. De USB-stick met beelden is voor altijd en eeuwig veiliggesteld. Wij maakten hiervan op ambtseed dit proces-verbaal op.", check: ["ik, verbalisant", "maandag", "09 maart", "11:", "maakte"] }
     ];
 
     let userPath = "";
@@ -127,7 +124,7 @@
     window.startOefening = () => {
         studentName = document.getElementById('student-name').value;
         currentClass = document.getElementById('student-class').value;
-        if (!studentName) return alert("Naam invullen.");
+        if (!studentName) return alert("Vul uw naam in.");
 
         userPath = `ggp_sessie/${currentClass}/${studentName.replace(/\s+/g, '_')}`;
         document.getElementById('login-screen').classList.add('hidden');
@@ -141,26 +138,18 @@
             const div = document.createElement('div');
             div.className = 'draggable-item locked';
             div.id = `item-${item.id}`;
-            div.innerHTML = `
-                <div>${item.text}</div>
-                <textarea placeholder="Typ: ik, verbalisant [Naam], ..." oninput="valideer(this, ${item.id})"></textarea>
-            `;
+            div.innerHTML = `<div>${item.text}</div><textarea placeholder="Typ hier de gecorrigeerde zin..."></textarea>`;
+            div.querySelector('textarea').oninput = (e) => valideer(e.target, item.id);
             container.appendChild(div);
         });
 
-        // Start live leaderboard
         onValue(ref(db, `ggp_sessie/${currentClass}`), (snapshot) => {
             const data = snapshot.val();
             const body = document.getElementById('leader-body');
             body.innerHTML = "";
             if (data) {
                 Object.values(data).sort((a,b) => b.progress - a.progress).forEach(s => {
-                    body.innerHTML += `
-                        <tr>
-                            <td>${s.name}</td>
-                            <td><div class="progress-bar"><div class="progress-fill" style="width:${s.progress}%"></div></div></td>
-                            <td>${s.progress === 100 ? '✅ Voltooid' : '⌛ ' + s.progress + '%'}</td>
-                        </tr>`;
+                    body.innerHTML += `<tr><td>${s.name}</td><td><div class="progress-bar"><div class="progress-fill" style="width:${s.progress}%"></div></div></td><td>${s.progress === 100 ? '✅' : s.progress + '%'}</td></tr>`;
                 });
             }
         });
@@ -170,12 +159,14 @@
         const input = el.value.toLowerCase().trim();
         const item = pvData.find(x => x.id === id);
         
-        // STRENG: ik, verbalisant [naam], [werkwoord]
-        const ikVormRegex = /^ik,\s+verbalisant\s+[a-z\.\s]+,\s+/;
-        const hasCorrectStructure = ikVormRegex.test(input);
-        const hasVerb = item.verb.some(v => input.includes(v));
+        // Controleert op de structuur: ik, verbalisant [Naam], ...
+        const ikVormCheck = /^ik,\s+verbalisant\s+[a-z\.\s]+,\s+/.test(input);
+        
+        // Controleert of alle keywords (stijlfouten en feiten) aanwezig zijn
+        // Voor de tijd checken we alleen op "11:" om variaties rond 11:00 uur toe te staan
+        const allChecksPassed = item.check.every(term => input.includes(term));
 
-        if (hasCorrectStructure && hasVerb) {
+        if (ikVormCheck && allChecksPassed) {
             const block = document.getElementById(`item-${id}`);
             block.classList.replace('locked', 'unlocked');
             block.draggable = true;
@@ -197,12 +188,10 @@
             if (type === zone.dataset.type) {
                 zone.appendChild(document.getElementById(`item-${id}`));
                 zone.classList.add('correct-drop');
-                
-                const currentProgress = (document.querySelectorAll('.correct-drop').length / 5) * 100;
-                update(ref(db, userPath), { progress: Math.round(currentProgress) });
-                if (currentProgress === 100) update(ref(db, userPath), { status: "Voltooid" });
+                const progress = Math.round((document.querySelectorAll('.correct-drop').length / 5) * 100);
+                update(ref(db, userPath), { progress: progress });
             } else {
-                alert("Niet de juiste ASTMA-fase.");
+                alert("Incorrecte plaatsing binnen het ASTMA-model.");
             }
         };
     });
