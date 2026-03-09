@@ -7,16 +7,20 @@
         :root { --police-blue: #1c2b4a; --text-gray: #334155; --border-color: #cbd5e1; --success-green: #10b981; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f8fafc; color: var(--text-gray); margin: 0; padding: 40px; }
         
+        /* Login */
         .login-container { max-width: 400px; margin: 60px auto; background: white; padding: 40px; border: 1px solid var(--border-color); border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
         h2 { color: var(--police-blue); font-weight: 600; margin-top: 0; }
         label { display: block; margin-bottom: 5px; font-weight: bold; }
         input, select { width: 100%; padding: 10px; margin-bottom: 20px; border: 1px solid var(--border-color); border-radius: 4px; box-sizing: border-box; }
         
+        /* Layout */
         .main-content { display: grid; grid-template-columns: 480px 1fr; gap: 40px; max-width: 1500px; margin: 0 auto; }
         .hidden { display: none !important; }
 
+        /* Instructie */
         .instruction-box { grid-column: 1 / -1; background: white; padding: 25px; margin-bottom: 30px; border: 1px solid var(--border-color); border-left: 5px solid var(--police-blue); line-height: 1.6; }
         
+        /* Kolommen */
         .source-list { background: #eff6ff; padding: 25px; border: 1px solid var(--border-color); border-radius: 4px; min-height: 900px; }
         .draggable-item { background: white; border: 1px solid var(--border-color); padding: 20px; margin-bottom: 25px; border-radius: 4px; font-size: 0.95rem; line-height: 1.7; }
         .locked { border-left: 5px solid #ef4444; }
@@ -27,6 +31,7 @@
         .drop-zone-label { font-weight: bold; color: var(--police-blue); margin-bottom: 15px; display: block; text-transform: uppercase; letter-spacing: 1.5px; font-size: 0.9rem; }
         .correct-drop { border: 2px solid var(--success-green); background: #f0fdf4; }
 
+        /* Leaderboard */
         .leaderboard { grid-column: 1 / -1; margin-top: 50px; background: white; padding: 30px; border: 1px solid var(--border-color); border-radius: 4px; }
         .leader-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
         .leader-table th, .leader-table td { text-align: left; padding: 15px; border-bottom: 1px solid #edf2f7; }
@@ -48,11 +53,15 @@
     <input type="text" id="student-name" placeholder="Voornaam Achternaam">
     <label>Klas</label>
     <select id="student-class">
+        <option value="Klas_Alfa">Klas Alfa</option>
+        <option value="Klas_Bravo">Klas Bravo</option>
+        <option value="Klas_Charlie">Klas Charlie</option>
         <option value="Klas_Delta">Klas Delta</option>
         <option value="Klas_Echo">Klas Echo</option>
         <option value="Klas_Foxtrot">Klas Foxtrot</option>
         <option value="Klas_Golf">Klas Golf</option>
         <option value="Klas_Juliett">Klas Juliett</option>
+        <option value="Klas_Kilo">Klas Kilo</option>
         <option value="Klas_Lima">Klas Lima</option>
         <option value="Klas_Mike">Klas Mike</option>
     </select>
@@ -62,9 +71,9 @@
 <div id="exercise-screen" class="main-content hidden">
     <div class="instruction-box">
         <strong>Instructie: Proces-verbaal Analyse & Individualisering</strong><br>
-        1. <strong>Analyseer:</strong> Spoor de foutieve zin, vage tijdsaanduiding of onjuiste tijdsvorm op.<br>
-        2. <strong>Verleden tijd:</strong> Let op! Veranderlijke zaken (zoals sneeuw) moeten in de <strong>verleden tijd</strong>.<br>
-        3. <strong>Herschrijf:</strong> Gebruik de vorm: <i>ik, verbalisant [Je Naam], ...</i><br>
+        1. <strong>Analyseer:</strong> Spoor de foutieve zin, vage tijd of onjuiste tijdsvorm op.<br>
+        2. <strong>Verleden tijd:</strong> Let op! Veranderlijke zaken (zoals witte sneeuw) beschrijf je in de <strong>verleden tijd</strong>.<br>
+        3. <strong>Herschrijf:</strong> Gebruik de verplichte vorm: <i>ik, verbalisant [Je Naam], ...</i><br>
         4. <strong>Indelen:</strong> Sleep het groene blok naar de juiste ASTMA-fase.
     </div>
 
@@ -88,7 +97,7 @@
         <div id="correctiemodel" class="correctiemodel-box">
             <strong>Antwoordsleutel:</strong><br>
             A: "ik, verbalisant [Naam], kreeg opdracht om de melder op te bellen..."<br>
-            S: "ik, verbalisant [Naam], zag dat er sneeuw op de klinkers <u>lag</u>..."<br>
+            S: "ik, verbalisant [Naam], zag dat er sneeuw op de klinkers <u>lag</u>..." (OVT!)<br>
             T: "ik, verbalisant [Naam], zag dat Stout geld aannam... realiseerde zich niet..."<br>
             M: "ik, verbalisant [Naam], vorderde op maandag 9 maart om 11:15 uur..."<br>
             Af: "ik, verbalisant [Naam], maakte op maandag 9 maart om 11:30 uur..."
