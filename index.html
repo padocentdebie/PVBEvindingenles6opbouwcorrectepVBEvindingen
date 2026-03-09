@@ -2,167 +2,155 @@
 <html lang="nl">
 <head>
     <meta charset="UTF-8">
-    <title>GGP ASTMA - Live Klas-oefening</title>
+    <title>GGP ASTMA Analyse - Onderwijs</title>
     <style>
-        :root { --police-blue: #1c2b4a; --police-gold: #f1c40f; --bg-gray: #f1f5f9; }
-        body { font-family: 'Segoe UI', sans-serif; background: var(--bg-gray); margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
+        :root { --police-blue: #1c2b4a; --text-gray: #334155; --border-color: #cbd5e1; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f8fafc; color: var(--text-gray); margin: 0; padding: 40px; }
         
-        .setup-screen, .admin-screen { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); text-align: center; max-width: 400px; width: 100%; }
+        /* Inlogscherm */
+        .login-container { max-width: 400px; margin: 100px auto; background: white; padding: 40px; border: 1px solid var(--border-color); border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        h2 { color: var(--police-blue); font-weight: 600; margin-top: 0; }
+        input, select { width: 100%; padding: 10px; margin: 10px 0 20px 0; border: 1px solid var(--border-color); border-radius: 4px; box-sizing: border-box; }
+        
+        /* Hoofdstructuur */
+        .main-content { display: grid; grid-template-columns: 450px 1fr; gap: 40px; max-width: 1400px; margin: 0 auto; }
         .hidden { display: none !important; }
 
-        .container { width: 100%; max-width: 1300px; display: grid; grid-template-columns: 400px 1fr; gap: 30px; }
+        /* Instructievlak */
+        .instruction-box { grid-column: 1 / -1; background: white; border-left: 4px solid var(--police-blue); padding: 20px; margin-bottom: 30px; border-top: 1px solid var(--border-color); border-right: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); }
         
-        /* De Chaos-lijst */
-        .source-container { background: #e2e8f0; padding: 20px; border-radius: 12px; min-height: 700px; }
-        .draggable-item { background: white; border: 2px solid #cbd5e1; padding: 15px; margin-bottom: 15px; border-radius: 8px; font-size: 0.85rem; transition: 0.3s; }
-        .locked { border-left: 8px solid #ef4444; }
-        .unlocked { border-left: 8px solid #10b981; cursor: grab; background: #f0fdf4; }
+        /* Chaos Kolom */
+        .source-list { background: #eff6ff; padding: 20px; border: 1px solid var(--border-color); border-radius: 4px; min-height: 800px; }
+        .draggable-item { background: white; border: 1px solid var(--border-color); padding: 20px; margin-bottom: 20px; border-radius: 4px; font-size: 0.9rem; line-height: 1.6; }
+        .locked { border-left: 4px solid #ef4444; }
+        .unlocked { border-left: 4px solid #10b981; cursor: grab; }
+        
+        /* ASTMA Kolom */
+        .target-zones { display: flex; flex-direction: column; gap: 20px; }
+        .drop-zone { background: white; border: 2px dashed var(--border-color); padding: 40px 20px; border-radius: 4px; position: relative; min-height: 80px; transition: background 0.2s; }
+        .drop-zone-label { font-weight: bold; color: var(--police-blue); margin-bottom: 10px; display: block; }
+        .correct-drop { border: 2px solid #10b981; background: #f0fdf4; }
 
-        /* ASTMA Zones */
-        .target-zones { display: flex; flex-direction: column; gap: 15px; }
-        .drop-zone { background: white; border: 3px dashed #cbd5e1; padding: 25px; border-radius: 12px; min-height: 80px; position: relative; }
-        .drop-zone::before { content: attr(data-label); position: absolute; top: -12px; left: 15px; background: var(--police-blue); color: white; padding: 3px 12px; border-radius: 5px; font-size: 0.75rem; font-weight: bold; }
-        .correct-drop { border: 3px solid #10b981; }
-
-        /* Digibord monitor */
-        .monitor-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 15px; width: 100%; }
-        .student-card { background: white; padding: 15px; border-radius: 8px; border-bottom: 4px solid var(--police-blue); }
-        .progress-bar { background: #e2e8f0; height: 10px; border-radius: 5px; margin-top: 10px; overflow: hidden; }
-        .progress-fill { height: 100%; background: #10b981; transition: 0.5s; }
-
-        input, select { width: 100%; padding: 12px; margin: 10px 0; border-radius: 6px; border: 1px solid #ccc; box-sizing: border-box; }
-        .btn { background: var(--police-blue); color: white; padding: 15px; border: none; border-radius: 6px; cursor: pointer; width: 100%; font-weight: bold; }
+        /* Knoppen */
+        .btn { background: var(--police-blue); color: white; padding: 12px 24px; border: none; border-radius: 4px; cursor: pointer; font-size: 1rem; }
+        .btn:hover { background: #2d3e61; }
+        
+        textarea { width: 100%; height: 80px; margin-top: 15px; border: 1px solid var(--border-color); padding: 10px; box-sizing: border-box; resize: none; }
     </style>
 </head>
 <body>
 
-<div id="setup" class="setup-screen">
-    <h2 style="color:var(--police-blue)">GGP Inloggen</h2>
-    <input type="text" id="student-name" placeholder="Je volledige naam">
-    <select id="class-id">
-        <option value="Klas-A">Klas A</option>
-        <option value="Klas-B">Klas B</option>
-        <option value="Klas-C">Klas C</option>
+<div id="login-screen" class="login-container">
+    <h2>Inloggen Oefenomgeving</h2>
+    <label>Volledige naam student</label>
+    <input type="text" id="student-name">
+    <label>Klas</label>
+    <select id="student-class">
+        <option value="Klas_A">Klas A</option>
+        <option value="Klas_B">Klas B</option>
+        <option value="Klas_C">Klas C</option>
     </select>
-    <button class="btn" onclick="startOefening()">Start Analyse</button>
-    <p onclick="showAdmin()" style="margin-top:15px; font-size:0.8rem; color:#94a3b8; cursor:pointer;">Digibord Monitor</p>
+    <button class="btn" onclick="startOefening()">Start oefening</button>
 </div>
 
-<div id="exercise" class="container hidden">
-    <div class="source-container" id="source-list">
-        <h3 style="margin-top:0">Ongeordende Alinea's</h3>
+<div id="exercise-screen" class="main-content hidden">
+    <div class="instruction-box">
+        <strong>Instructie</strong><br>
+        1. Analyseer de alinea's in de linker kolom. Deze bevatten zinnen in de "wij-vorm".<br>
+        2. Herschrijf de gemarkeerde zin in het tekstvak naar de individuele ik-vorm (bijv. <i>Ik, verbalisant J. de VRIES, zag dat...</i>).<br>
+        3. Na correctie wordt de alinea ontgrendeld. Sleep deze naar het juiste onderdeel van het ASTMA-model.
     </div>
+
+    <div class="source-list" id="chaos-column">
+        <h3 style="margin-top:0">Ongeordende alinea's</h3>
+    </div>
+
     <div class="target-zones">
-        <div class="drop-zone" data-label="Aanleiding" data-type="A"></div>
-        <div class="drop-zone" data-label="Situatie (OTT)" data-type="S"></div>
-        <div class="drop-zone" data-label="Toedracht (OVT)" data-type="T"></div>
-        <div class="drop-zone" data-label="Maatregelen" data-type="M"></div>
-        <div class="drop-zone" data-label="Afhandeling" data-type="Af"></div>
+        <div class="drop-zone" data-type="A"><span class="drop-zone-label">Aanleiding</span></div>
+        <div class="drop-zone" data-type="S"><span class="drop-zone-label">Situatie (Decor - OTT)</span></div>
+        <div class="drop-zone" data-type="T"><span class="drop-zone-label">Toedracht (Handelingen - OVT)</span></div>
+        <div class="drop-zone" data-label="M" data-type="M"><span class="drop-zone-label">Maatregelen</span></div>
+        <div class="drop-zone" data-type="Af"><span class="drop-zone-label">Afhandeling</span></div>
     </div>
-</div>
-
-<div id="admin" class="hidden" style="width:100%; max-width:1200px;">
-    <h2 style="color:var(--police-blue); text-align:center;">Live Voortgang: <span id="current-class-display">Klas A</span></h2>
-    <div id="monitor-grid" class="monitor-grid"></div>
 </div>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
-    import { getDatabase, ref, set, onValue, update } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js";
+    import { getDatabase, ref, set, update } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js";
 
-    const config = {
+    const firebaseConfig = {
         apiKey: "AIzaSyC-Of0AUOd-kVo2RKxYc-68Gr-RO4HdRk0",
         authDomain: "q2aangifteles2.firebaseapp.com",
         databaseURL: "https://q2aangifteles2-default-rtdb.europe-west1.firebasedatabase.app",
         projectId: "q2aangifteles2",
     };
-    const db = getDatabase(initializeApp(config));
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
 
     const pvData = [
-        { id: 1, type: "A", error: "telefoneren", text: "Op 09-03-2026 kregen wij, J. de VRIES en S. de JONG (aspiranten Drachten Centrum), melding Sportlaan 7. Wij moesten de melder op telefoneren. We reden in een herkenbaar voertuig." },
-        { id: 2, type: "S", error: "witte", text: "De vakken liggen aan de noordzijde van Sportlaan 7. Ter plaatse ligt witte sneeuw. Een zwarte Golf (AA-11-BB) staat geparkeerd. In de auto zit een man." },
-        { id: 3, type: "T", error: "beseffen", text: "Ik zag beelden dat J.J. STOUT geld aannam. Stout leek zich niet te beseffen dat wij hem zagen toen hij de tas op de achterbank zette. Hij trilde met zijn handen." },
-        { id: 4, type: "M", error: "criminele", text: "Vorderde ID van Stout. Vanwege criminele misdaden en de tas met wit poeder, hebben we hem op grond van de Opiumwet aan zijn kleding onderzocht." },
-        { id: 5, type: "Af", error: "eeuwig", text: "Verdachte overgebracht naar bureau Drachten. De USB-stick is voor altijd en eeuwig veiliggesteld. Opgemaakt op ambtseed." }
+        { id: 1, type: "A", text: "Op 09-03-2026 kregen wij melding Sportlaan 7. <mark>Wij kregen de opdracht om naar de Sportlaan 7 te gaan.</mark> We reden in een herkenbaar voertuig.", check: "ik, verbalisant" },
+        { id: 2, type: "S", text: "De parkeervakken liggen aan de noordzijde van perceel Sportlaan 7. Ter plaatse ligt witte sneeuw. <mark>Wij zagen dat een zwarte VW Golf geparkeerd stond.</mark>", check: "ik, verbalisant" },
+        { id: 3, type: "T", text: "Ter plaatse hoorde ik de melder. <mark>Wij zagen dat J.J. STOUT geld aannam.</mark> Hij leek zich niet te realiseren dat hij werd geobserveerd.", check: "ik, verbalisant" },
+        { id: 4, type: "M", text: "Stout maakte een zenuwachtige indruk. <mark>Wij vorderden inzage in zijn identiteitsbewijs.</mark> Op grond van de Opiumwet onderzochten we hem.", check: "ik, verbalisant" },
+        { id: 5, type: "Af", text: "De verdachte is overgebracht naar bureau Drachten. <mark>Wij maakten dit proces-verbaal op ambtseed op.</mark>", check: "ik, verbalisant" }
     ];
 
-    let userKey = "";
-    let unlockedCount = 0;
-    let placedCount = 0;
+    let userPath = "";
 
     window.startOefening = () => {
         const name = document.getElementById('student-name').value;
-        const klas = document.getElementById('class-id').value;
-        if(!name) return alert("Naam invullen!");
-        
-        userKey = `${klas}/${name.replace(/\s+/g, '_')}`;
-        document.getElementById('setup').classList.add('hidden');
-        document.getElementById('exercise').classList.remove('hidden');
+        const klas = document.getElementById('student-class').value;
+        if (!name) return alert("Vul uw naam in.");
 
-        // Render Chaos
-        const list = document.getElementById('source-list');
+        userPath = `ggp_sessie/${klas}/${name.replace(/\s+/g, '_')}`;
+        document.getElementById('login-screen').classList.add('hidden');
+        document.getElementById('exercise-screen').classList.remove('hidden');
+
+        set(ref(db, userPath), { name, progress: 0, status: "Gestart" });
+
+        const container = document.getElementById('chaos-column');
         pvData.sort(() => Math.random() - 0.5).forEach(item => {
             const div = document.createElement('div');
             div.className = 'draggable-item locked';
             div.id = `item-${item.id}`;
-            div.innerHTML = `<div>${item.text}</div><input type="text" placeholder="Fout..." oninput="checkInput(this, '${item.error}', '${item.id}')">`;
-            list.appendChild(div);
+            div.innerHTML = `
+                <div>${item.text}</div>
+                <textarea placeholder="Herschrijf de gemarkeerde zin in de ik-vorm..." oninput="valideer(this, ${item.id})"></textarea>
+            `;
+            container.appendChild(div);
         });
-        updateFirebase();
     };
 
-    window.checkInput = (input, error, id) => {
-        if(input.value.toLowerCase().trim() === error.toLowerCase()){
-            const el = document.getElementById(`item-${id}`);
-            el.classList.replace('locked', 'unlocked');
-            el.draggable = true;
-            input.disabled = true;
-            unlockedCount++;
-            updateFirebase();
-            el.ondragstart = (e) => { e.dataTransfer.setData('id', id); e.dataTransfer.setData('type', pvData.find(x=>x.id==id).type); };
+    window.valideer = (el, id) => {
+        const input = el.value.toLowerCase();
+        if (input.includes("ik, verbalisant") && (input.includes("zag") || input.includes("kreeg") || input.includes("vorderde") || input.includes("maakte"))) {
+            const block = document.getElementById(`item-${id}`);
+            block.classList.replace('locked', 'unlocked');
+            block.draggable = true;
+            el.disabled = true;
+            el.style.background = "#f0fdf4";
+            
+            block.ondragstart = (e) => {
+                e.dataTransfer.setData('id', id);
+                e.dataTransfer.setData('type', pvData.find(x => x.id === id).type);
+            };
+            update(ref(db, userPath), { progress: id * 20 });
         }
     };
 
     document.querySelectorAll('.drop-zone').forEach(zone => {
-        zone.ondragover = e => e.preventDefault();
-        zone.ondrop = e => {
-            const id = e.dataTransfer.setData ? e.dataTransfer.getData('id') : null; // Simpel voor demo
+        zone.ondragover = (e) => e.preventDefault();
+        zone.ondrop = (e) => {
+            const id = e.dataTransfer.getData('id');
             const type = e.dataTransfer.getData('type');
-            if(type === zone.dataset.type){
-                zone.appendChild(document.getElementById(`item-${e.dataTransfer.getData('id')}`));
+            if (type === zone.dataset.type) {
+                zone.appendChild(document.getElementById(`item-${id}`));
                 zone.classList.add('correct-drop');
-                placedCount++;
-                updateFirebase();
+            } else {
+                alert("Incorrecte plaatsing binnen het ASTMA-model.");
             }
         };
     });
-
-    function updateFirebase() {
-        const totalProgress = ((unlockedCount + placedCount) / 10) * 100;
-        set(ref(db, `ggp_progress/${userKey}`), { 
-            name: document.getElementById('student-name').value, 
-            progress: totalProgress,
-            unlocked: unlockedCount,
-            placed: placedCount
-        });
-    }
-
-    window.showAdmin = () => {
-        document.getElementById('setup').classList.add('hidden');
-        document.getElementById('admin').classList.remove('hidden');
-        onValue(ref(db, `ggp_progress/Klas-A`), (snap) => {
-            const grid = document.getElementById('monitor-grid');
-            grid.innerHTML = "";
-            const data = snap.val();
-            if(data) Object.values(data).forEach(s => {
-                grid.innerHTML += `<div class="student-card">
-                    <strong>${s.name}</strong>
-                    <div style="font-size:0.7rem">Verbeterd: ${s.unlocked}/5 | Gesleept: ${s.placed}/5</div>
-                    <div class="progress-bar"><div class="progress-fill" style="width:${s.progress}%"></div></div>
-                </div>`;
-            });
-        });
-    };
 </script>
 </body>
 </html>
